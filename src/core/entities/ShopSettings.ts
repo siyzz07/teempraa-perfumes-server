@@ -5,6 +5,8 @@ export interface ShopSettings {
   address: string;
   phone: string;
   email: string;
+  whatsapp?: string;
+  instagram?: string;
   profilePic?: string;
   coverPhotos?: string[];
   location?: {

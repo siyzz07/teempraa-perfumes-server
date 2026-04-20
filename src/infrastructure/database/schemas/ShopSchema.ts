@@ -6,6 +6,8 @@ export interface IShopDocument extends Document {
   address: string;
   phone: string;
   email: string;
+  whatsapp?: string;
+  instagram?: string;
   profilePic?: string;
   coverPhotos?: string[];
   location?: {
@@ -15,11 +17,13 @@ export interface IShopDocument extends Document {
 }
 
 const ShopSchema: Schema = new Schema({
-  shopName: { type: String, required: true },
-  description: { type: String, required: true },
-  address: { type: String, required: true },
-  phone: { type: String, required: true },
-  email: { type: String, required: true },
+  shopName: { type: String },
+  description: { type: String },
+  address: { type: String },
+  phone: { type: String },
+  email: { type: String },
+  whatsapp: { type: String },
+  instagram: { type: String },
   profilePic: { type: String },
   coverPhotos: { type: [String] },
   location: {

@@ -11,6 +11,8 @@ export class MongooseShopRepository implements IShopRepository {
       address: doc.address,
       phone: doc.phone,
       email: doc.email,
+      whatsapp: doc.whatsapp,
+      instagram: doc.instagram,
       profilePic: doc.profilePic,
       coverPhotos: doc.coverPhotos,
       location: doc.location

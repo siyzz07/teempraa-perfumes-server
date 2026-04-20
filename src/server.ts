@@ -24,7 +24,9 @@ const PORT = process.env.PORT || 5000;
 
 // Middleware
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+    origin:["http://localhost:5175","https://teempraa.vercel.app"]
+}));
 app.use(helmet({ contentSecurityPolicy: false }));
 app.use(compression());
 

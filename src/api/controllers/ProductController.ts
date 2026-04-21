@@ -6,8 +6,17 @@ export class ProductController {
 
   getAll = async (req: Request, res: Response) => {
     try {
-      const products = await this.productService.getAllProducts();
-      res.status(200).json(products);
+      const { search, category, sortBy, page, limit } = req.query;
+      
+      const result = await this.productService.getAllProducts({
+        search: search as string,
+        category: category as string,
+        sortBy: sortBy as string,
+        page: page ? parseInt(page as string) : 1,
+        limit: limit ? parseInt(limit as string) : 12,
+      });
+
+      res.status(200).json(result);
     } catch (error: any) {
       res.status(500).json({ message: error.message });
     }

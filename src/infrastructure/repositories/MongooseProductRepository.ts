@@ -18,9 +18,45 @@ export class MongooseProductRepository implements IProductRepository {
     };
   }
 
-  async findAll(): Promise<Product[]> {
-    const docs = await ProductModel.find().sort({ createdAt: -1 });
-    return docs.map(this.mapToDomain);
+  async findAll(params?: {
+    search?: string;
+    category?: string;
+    sortBy?: string;
+    page?: number;
+    limit?: number;
+  }): Promise<{ products: Product[]; total: number }> {
+    const query: any = {};
+
+    if (params?.search) {
+      query.$or = [
+        { name: { $regex: params.search, $options: "i" } },
+        { description: { $regex: params.search, $options: "i" } },
+        { scentType: { $regex: params.search, $options: "i" } },
+      ];
+    }
+
+    if (params?.category && params.category !== 'All') {
+      query.scentType = params.category;
+    }
+
+    const sort: any = {};
+    if (params?.sortBy === 'price-low') sort.price = 1;
+    else if (params?.sortBy === 'price-high') sort.price = -1;
+    else sort.createdAt = -1;
+
+    const page = params?.page || 1;
+    const limit = params?.limit || 12;
+    const skip = (page - 1) * limit;
+
+    const [docs, total] = await Promise.all([
+      ProductModel.find(query).sort(sort).skip(skip).limit(limit),
+      ProductModel.countDocuments(query),
+    ]);
+
+    return {
+      products: docs.map(this.mapToDomain),
+      total,
+    };
   }
 
   async findById(id: string): Promise<Product | null> {

@@ -4,8 +4,14 @@ import { IProductRepository } from '../../core/repositories/IProductRepository';
 export class ProductService {
   constructor(private productRepository: IProductRepository) {}
 
-  async getAllProducts(): Promise<Product[]> {
-    return await this.productRepository.findAll();
+  async getAllProducts(params?: {
+    search?: string;
+    category?: string;
+    sortBy?: string;
+    page?: number;
+    limit?: number;
+  }): Promise<{ products: Product[]; total: number }> {
+    return await this.productRepository.findAll(params);
   }
 
   async getProductById(id: string): Promise<Product | null> {

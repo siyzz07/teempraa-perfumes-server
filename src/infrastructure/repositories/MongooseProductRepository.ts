@@ -14,6 +14,7 @@ export class MongooseProductRepository implements IProductRepository {
       description: doc.description,
       notes: doc.notes,
       inStock: doc.inStock,
+      reviews: doc.reviews,
       createdAt: doc.createdAt,
     };
   }
@@ -70,8 +71,9 @@ export class MongooseProductRepository implements IProductRepository {
     return this.mapToDomain(doc);
   }
 
-  async update(id: string, product: Partial<Product>): Promise<Product | null> {
-    const doc = await ProductModel.findByIdAndUpdate(id, product, {
+  async update(id: string, productData: Partial<Product>): Promise<Product | null> {
+    const { id: _, ...updateData } = productData as any;
+    const doc = await ProductModel.findByIdAndUpdate(id, updateData, {
       new: true,
     });
     return doc ? this.mapToDomain(doc) : null;

@@ -9,6 +9,11 @@ export interface IProductDocument extends Document {
   description: string;
   notes?: string;
   inStock: boolean;
+  reviews?: Array<{
+    user: string;
+    comment: string;
+    rating: number;
+  }>;
   createdAt: Date;
 }
 
@@ -21,6 +26,11 @@ const ProductSchema: Schema = new Schema({
   description: { type: String, required: true },
   notes: { type: String },
   inStock: { type: Boolean, default: true },
+  reviews: [{
+    user: { type: String, required: true },
+    comment: { type: String, required: true },
+    rating: { type: Number, required: true, min: 1, max: 5 }
+  }],
   createdAt: { type: Date, default: Date.now },
 });
 

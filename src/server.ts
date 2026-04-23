@@ -25,7 +25,7 @@ const PORT = process.env.PORT || 5000;
 // Middleware
 app.use(express.json());
 app.use(cors({
-    origin:["http://localhost:5175","https://teempraa.vercel.app"]
+    origin: process.env.ALLOWED_ORIGINS ? process.env.ALLOWED_ORIGINS.split(',') : ["http://localhost:5173"]
 }));
 app.use(helmet({ contentSecurityPolicy: false }));
 app.use(compression());
@@ -33,7 +33,7 @@ app.use(compression());
 // HTTP Request Logging
 const morganFormat = process.env.NODE_ENV === 'development' ? 'dev' : 'combined';
 app.use(morgan(morganFormat, {
-  stream: { write: (message) => logger.http(message.trim()) },
+  stream: { write: (message: string) => logger.http(message.trim()) },
 }));
 
 // Initialize Database & Seeding
@@ -94,7 +94,7 @@ app.use('/api/categories', scentTypeRoutes);
 app.use('/api/upload', uploadRoutes);
 
 // Base Route
-app.get('/', (req, res) => {
+app.get('/', (req: express.Request, res: express.Response) => {
   res.send('TEEMPRAA Admin API is running...');
 });
 
